@@ -1,5 +1,6 @@
 package com.Interfaces.watchlist
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -53,6 +55,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -83,6 +86,13 @@ import kotlinx.coroutines.launch
 fun ListaPeliculas(
     navcontroller: NavController
 ) {
+    val peliculas = remember {
+        mutableStateListOf(
+            Pelicula(1, "La Vida es Bella", "Bélico/Acción", 1997, 4.8, false, false),
+            Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 4.7, false, true),
+            Pelicula(3, "Matrix", "Acción", 1999, 4.9, true, true)
+        )
+    }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -101,16 +111,15 @@ fun ListaPeliculas(
 
 
         LazyColumn(
-            Modifier
+            modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             items(peliculas) { pelicula ->
-                PeliculaItem(pe)
+                PeliculaItem(peliculaI = pelicula)
             }
-
         }
 
         FloatingActionButton(
@@ -135,17 +144,19 @@ fun ListaPeliculas(
 fun PeliculaItem(
     peliculaI: Pelicula
 ) {
-    Card(
+    OutlinedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         modifier = Modifier
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(4.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
     ) {
         Row(
-            modifier = Modifier
-                .padding(12.dp),
+            modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
 
             Box(
                 modifier = Modifier
@@ -159,24 +170,22 @@ fun PeliculaItem(
 
             Spacer(Modifier.width(12.dp))
 
-
             Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = pelicula.titulo,
+                    text = peliculaI.titulo,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "${pelicula.genero} · ${pelicula.año}",
+                    text = "${peliculaI.genero} · ${peliculaI.año}",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
-                    text = "⭐ ${pelicula.puntuacion}",
+                    text = "⭐ ${peliculaI.puntuacion}",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-
         }
     }
 }
