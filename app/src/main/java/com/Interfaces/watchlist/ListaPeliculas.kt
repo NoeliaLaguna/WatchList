@@ -1,6 +1,7 @@
 package com.Interfaces.watchlist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -83,6 +84,12 @@ import kotlinx.coroutines.launch
 fun ListaPeliculas(
     navcontroller: NavController
 ) {
+    val peliculas = listOf(Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, true),
+        Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false, true),
+        Pelicula(3, "The Dark Knight", "Acción", 2008, 9.0, true, true),
+        Pelicula(4, "Parasite", "Thriller", 2019, 8.6, false, false),
+        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false))
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -108,7 +115,7 @@ fun ListaPeliculas(
             verticalArrangement = Arrangement.Center
         ) {
             items(peliculas) { pelicula ->
-                PeliculaItem(pe)
+                PeliculaItem(peliculaI = pelicula)
             }
 
         }
@@ -164,15 +171,15 @@ fun PeliculaItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = pelicula.titulo,
+                    text = peliculaI.titulo,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "${pelicula.genero} · ${pelicula.año}",
+                    text = "${peliculaI.genero} · ${peliculaI.año}",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
-                    text = "⭐ ${pelicula.puntuacion}",
+                    text = "⭐ ${peliculaI.puntuacion}",
                     style = MaterialTheme.typography.bodySmall
                 )
             }
