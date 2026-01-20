@@ -1,7 +1,7 @@
 package com.Interfaces.watchlist
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -55,7 +54,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -86,13 +84,12 @@ import kotlinx.coroutines.launch
 fun ListaPeliculas(
     navcontroller: NavController
 ) {
-    val peliculas = remember {
-        mutableStateListOf(
-            Pelicula(1, "La Vida es Bella", "Bélico/Acción", 1997, 4.8, false, false),
-            Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 4.7, false, true),
-            Pelicula(3, "Matrix", "Acción", 1999, 4.9, true, true)
-        )
-    }
+    val peliculas = listOf(Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, true),
+        Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false, true),
+        Pelicula(3, "The Dark Knight", "Acción", 2008, 9.0, true, true),
+        Pelicula(4, "Parasite", "Thriller", 2019, 8.6, false, false),
+        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false))
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -111,7 +108,7 @@ fun ListaPeliculas(
 
 
         LazyColumn(
-            modifier = Modifier
+            Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -120,6 +117,7 @@ fun ListaPeliculas(
             items(peliculas) { pelicula ->
                 PeliculaItem(peliculaI = pelicula)
             }
+
         }
 
         FloatingActionButton(
@@ -144,19 +142,17 @@ fun ListaPeliculas(
 fun PeliculaItem(
     peliculaI: Pelicula
 ) {
-    OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+    Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
 
             Box(
                 modifier = Modifier
@@ -169,6 +165,7 @@ fun PeliculaItem(
             }
 
             Spacer(Modifier.width(12.dp))
+
 
             Column(
                 modifier = Modifier.weight(1f)
@@ -186,6 +183,7 @@ fun PeliculaItem(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
+
         }
     }
 }
