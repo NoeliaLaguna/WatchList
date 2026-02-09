@@ -27,11 +27,13 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.IndeterminateCheckBox
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.sharp.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -64,6 +66,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -87,15 +90,12 @@ import kotlinx.coroutines.launch
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun ListaPeliculas(
-    navcontroller: NavController
+    navcontroller: NavController,
+    peliculas: MutableList<Pelicula>
 ) {
-    val peliculas = listOf(
-        Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, true),
-        Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false, true),
-        Pelicula(3, "La Vida es Bella", "Bélico/Comedia", 1997, 9.7, true, true),
-        Pelicula(4, "Parasite", "Thriller", 2019, 8.6, false, false),
-        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false),
-    )
+
+    var peliculaAEliminar by remember { mutableStateOf<Pelicula?>(null) }
+
 
     Scaffold(
         topBar = {
@@ -111,7 +111,7 @@ fun ListaPeliculas(
             SmallFloatingActionButton(
                 onClick = {
                     //Añadir película
-                    navcontroller.navigate("inicio") // luego cambiará a "add"
+                    navcontroller.navigate("add")
                 },
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.secondary
@@ -132,20 +132,106 @@ fun ListaPeliculas(
             verticalArrangement = Arrangement.Center
         ) {
             items(peliculas) { pelicula ->
-                PeliculaItem(peliculaI = pelicula)
+                PeliculaItem(
+                    peliculaI = pelicula,
+                    onDeleteClick = {
+                        peliculaAEliminar = pelicula
+                    }
+                )
             }
+
 
         }
     }
+
+    if (peliculaAEliminar != null) {
+        AlertDialog(
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Warning,
+                    contentDescription = null
+                )
+            },
+            title = {
+                Text("Eliminar película")
+            },
+            text = {
+                Text("¿Seguro que quieres eliminar \"${peliculaAEliminar!!.titulo}\"?")
+            },
+            onDismissRequest = {
+                peliculaAEliminar = null
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        peliculas.remove(peliculaAEliminar)
+                        peliculaAEliminar = null
+                    }
+                ) {
+                    Text("Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        peliculaAEliminar = null
+                    }
+                ) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+    if (peliculaAEliminar != null) {
+        AlertDialog(
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Warning,
+                    contentDescription = null
+                )
+            },
+            title = {
+                Text("Eliminar película")
+            },
+            text = {
+                Text("¿Seguro que quieres eliminar \"${peliculaAEliminar!!.titulo}\"?")
+            },
+            onDismissRequest = {
+                peliculaAEliminar = null
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        peliculas.remove(peliculaAEliminar)
+                        peliculaAEliminar = null
+                    }
+                ) {
+                    Text("Eliminar")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        peliculaAEliminar = null
+                    }
+                ) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+
 }
 
 @Composable
 fun PeliculaItem(
-    peliculaI: Pelicula
+    peliculaI: Pelicula,
+    onDeleteClick: () -> Unit
 
 ) {
     var checked by remember { mutableStateOf(peliculaI.vista) }
     var isToggled by rememberSaveable { mutableStateOf(false) }
+
 
     Row(
         modifier = Modifier
@@ -190,19 +276,14 @@ fun PeliculaItem(
 
         //ICONO TOGGLE (BORRAR PELI) A LA DERECHA (FUERA DE LA TARJETA)
         IconButton(
-            onClick = { isToggled = !isToggled }
+            onClick = onDeleteClick
         ) {
             Icon(
-                imageVector = if (isToggled)
-                    Icons.Filled.Delete
-                else
-                    Icons.Outlined.Delete,
-                contentDescription = if (isToggled)
-                    "Eliminar seleccionado"
-                else
-                    "Eliminar no seleccionado"
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = "Eliminar película"
             )
         }
+
         /*
                     Box(
                         modifier = Modifier
