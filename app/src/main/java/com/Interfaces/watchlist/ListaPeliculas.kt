@@ -21,13 +21,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.IndeterminateCheckBox
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.ShoppingCart
@@ -62,7 +60,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -89,41 +86,28 @@ import kotlinx.coroutines.launch
 fun ListaPeliculas(
     navcontroller: NavController
 ) {
-    val peliculas = listOf(
-        Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, true),
+    val peliculas = listOf(Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, true),
         Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false, true),
-        Pelicula(3, "La Vida es Bella", "Bélico/Comedia", 1997, 9.7, true, true),
+        Pelicula(3, "The Dark Knight", "Acción", 2008, 9.0, true, true),
         Pelicula(4, "Parasite", "Thriller", 2019, 8.6, false, false),
-        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false),
-    )
+        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false))
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
-                title = { Text("WatchList") }
+                title = {
+                    Text("WatchList")
+                }
             )
-        },
-        floatingActionButton = {
-            SmallFloatingActionButton(
-                onClick = {
-                    //Añadir película
-                    navcontroller.navigate("inicio") // luego cambiará a "add"
-                },
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.secondary
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = "Añadir película"
-                )
-            }
         }
-
     ) { innerPadding ->
+
+
         LazyColumn(
             Modifier
                 .padding(innerPadding)
@@ -136,105 +120,72 @@ fun ListaPeliculas(
             }
 
         }
+
+        FloatingActionButton(
+            onClick = { navcontroller.navigate("Inicio") }, //TODO: Modificar La ruta.
+            shape = CircleShape,
+            modifier = Modifier
+                .padding(start = 5.dp)
+                .size(width = 150.dp, height = 50.dp),
+            content = {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Agregar película"
+                )
+            }
+        )
+
+
     }
 }
 
 @Composable
 fun PeliculaItem(
     peliculaI: Pelicula
-
 ) {
-    var checked by remember { mutableStateOf(peliculaI.vista) }
-    var isToggled by rememberSaveable { mutableStateOf(false) }
-
-    Row(
+    OutlinedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(8.dp)
     ) {
-
-        //TARJETA DE LA PELÍCULA
-        OutlinedCard(
-            modifier = Modifier.weight(1f)
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
+                contentAlignment = Alignment.Center
             ) {
+                Icon(Icons.Outlined.Image, contentDescription = null)
+            }
 
-                // CHECKBOX A LA IZQUIERDA
-                Checkbox(
-                    checked = checked,
-                    onCheckedChange = { checked = it }
+            Spacer(Modifier.width(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = peliculaI.titulo,
+                    style = MaterialTheme.typography.titleMedium
                 )
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Column {
-                    Text(
-                        text = peliculaI.titulo,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = "${peliculaI.genero} · ${peliculaI.año}",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    Text(
-                        text = "⭐ ${peliculaI.puntuacion}",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
+                Text(
+                    text = "${peliculaI.genero} · ${peliculaI.año}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = "⭐ ${peliculaI.puntuacion}",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
-
-        //ICONO TOGGLE (BORRAR PELI) A LA DERECHA (FUERA DE LA TARJETA)
-        IconButton(
-            onClick = { isToggled = !isToggled }
-        ) {
-            Icon(
-                imageVector = if (isToggled)
-                    Icons.Filled.Delete
-                else
-                    Icons.Outlined.Delete,
-                contentDescription = if (isToggled)
-                    "Eliminar seleccionado"
-                else
-                    "Eliminar no seleccionado"
-            )
-        }
-        /*
-                    Box(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.secondaryContainer),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(Icons.Outlined.Image, contentDescription = null)
-                    }
-
-                    Spacer(Modifier.width(12.dp))
-
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = peliculaI.titulo,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = "${peliculaI.genero} · ${peliculaI.año}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Text(
-                            text = "⭐ ${peliculaI.puntuacion}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
-
-         */
     }
 }
 
