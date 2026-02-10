@@ -90,7 +90,11 @@ fun ListaPeliculas(
         Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false, true),
         Pelicula(3, "The Dark Knight", "Acción", 2008, 9.0, true, true),
         Pelicula(4, "Parasite", "Thriller", 2019, 8.6, false, false),
-        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false))
+        Tarjetas
+        Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false),
+        Pelicula(6, "Breaking Bad", "Drama", 2008, 9.5, false, false),
+        Pelicula(7, "Juego de Tronos", "Drama", 2011, 9.2, true, false),
+    )
 
     Scaffold(
         topBar = {
