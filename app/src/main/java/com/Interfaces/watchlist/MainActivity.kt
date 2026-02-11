@@ -113,6 +113,8 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun Navegacion() {
+
+        //Prueba
         val navController = rememberNavController()
         var destinoSeleccionado by remember { mutableIntStateOf(0) }
 

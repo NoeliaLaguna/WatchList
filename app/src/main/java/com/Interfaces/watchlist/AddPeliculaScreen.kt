@@ -36,6 +36,8 @@ fun AddPeliculaScreen(
 )
  {
 
+    //Prueba
+
     var titulo by remember { mutableStateOf("") }
     var genero by remember { mutableStateOf("") }
     var anyo by remember { mutableStateOf("") }

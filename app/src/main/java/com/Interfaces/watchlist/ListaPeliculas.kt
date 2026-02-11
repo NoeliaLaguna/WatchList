@@ -93,6 +93,7 @@ fun ListaPeliculas(
     navcontroller: NavController,
     peliculas: MutableList<Pelicula>
 ) {
+    //Prueba
 
     var peliculaAEliminar by remember { mutableStateOf<Pelicula?>(null) }
 
