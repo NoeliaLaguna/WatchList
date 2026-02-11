@@ -1,5 +1,6 @@
 package com.Interfaces.watchlist
 
+//Prueba
 data class Pelicula(
     val id: Int,
     val titulo: String,
@@ -7,5 +8,7 @@ data class Pelicula(
     val año: Int,
     val puntuacion: Double,
     val favorita: Boolean,
-    val vista: Boolean
+    val vista: Boolean,
+    val imagen: Int
+
 )
