@@ -8,5 +8,7 @@ data class Pelicula(
     val año: Int,
     val puntuacion: Double,
     val favorita: Boolean,
-    val vista: Boolean
+    val vista: Boolean,
+    val imagen: Int
+
 )

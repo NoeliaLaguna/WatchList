@@ -1,91 +1,51 @@
 package com.Interfaces.watchlist
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckBox
-import androidx.compose.material.icons.filled.CheckBoxOutlineBlank
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.IndeterminateCheckBox
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.ShoppingCart
-import androidx.compose.material.icons.sharp.Menu
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ElevatedButton
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.MultiChoiceSegmentedButtonRow
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,51 +57,88 @@ fun ListaPeliculas(
 
     var peliculaAEliminar by remember { mutableStateOf<Pelicula?>(null) }
 
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = { Text("WatchList") }
-            )
-        },
-        floatingActionButton = {
-            SmallFloatingActionButton(
-                onClick = {
-                    //Añadir película
-                    navcontroller.navigate("add")
-                },
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.secondary
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = "Añadir película"
-                )
-            }
-        }
+        // 🔹 IMAGEN DE FONDO
+        Image(
+            painter = painterResource(id = R.drawable.fondo),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
 
-    ) { innerPadding ->
-        LazyColumn(
-            Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            items(peliculas) { pelicula ->
-                PeliculaItem(
-                    peliculaI = pelicula,
-                    onDeleteClick = {
-                        peliculaAEliminar = pelicula
+        // 🔹 CAPA OSCURA PARA QUE SE LEA BIEN
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.4f))
+        )
+
+        Scaffold(
+            containerColor = Color.Transparent,
+            topBar = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                ) {
+
+                    Image(
+                        painter = painterResource(id = R.drawable.fondo_topbarr),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp)
+                    ) {
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
                     }
-                )
+                }
+            },
+            floatingActionButton = {
+                SmallFloatingActionButton(
+                    onClick = {
+                        //Añadir película
+                        navcontroller.navigate("add")
+                    },
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.secondary
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "Añadir película"
+                    )
+                }
             }
 
+        ) { innerPadding ->
+            LazyColumn(
+                Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                items(peliculas) { pelicula ->
+                    PeliculaItem(
+                        peliculaI = pelicula,
+                        onDeleteClick = {
+                            peliculaAEliminar = pelicula
+                        }
+                    )
+                }
 
+
+            }
         }
     }
 
@@ -228,97 +225,105 @@ fun ListaPeliculas(
 fun PeliculaItem(
     peliculaI: Pelicula,
     onDeleteClick: () -> Unit
-
 ) {
     var checked by remember { mutableStateOf(peliculaI.vista) }
-    var isToggled by rememberSaveable { mutableStateOf(false) }
-
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .padding(horizontal = 8.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        //TARJETA DE LA PELÍCULA
         OutlinedCard(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.75f)
+            ),
+            border = BorderStroke(
+                1.dp,
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+            )
         ) {
+
             Row(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                // CHECKBOX A LA IZQUIERDA
-                Checkbox(
-                    checked = checked,
-                    onCheckedChange = { checked = it }
+                // 🔹 IMAGEN
+                Image(
+                    painter = painterResource(id = peliculaI.imagen),
+                    contentDescription = peliculaI.titulo,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(140.dp)
+                        .width(95.dp)
                 )
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
-                Column {
+                // 🔹 CONTENIDO
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+
                     Text(
                         text = peliculaI.titulo,
                         style = MaterialTheme.typography.titleMedium
                     )
+
                     Text(
                         text = "${peliculaI.genero} · ${peliculaI.año}",
                         style = MaterialTheme.typography.bodySmall
                     )
+
                     Text(
                         text = "⭐ ${peliculaI.puntuacion}",
                         style = MaterialTheme.typography.bodySmall
                     )
+
+                    // 🔹 ACCIONES MÁS PEGADAS
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+
+                            // 🔹 IMAGEN DINÁMICA VISTO / NO VISTO
+                            Image(
+                                painter = painterResource(
+                                    id = if (checked) R.drawable.visto else R.drawable.novisto
+                                ),
+                                contentDescription = "Estado visto",
+                                modifier = Modifier
+                                    .size(90.dp)
+                                    .clickable {
+                                        checked = !checked
+                                    }
+                            )
+
+                            IconButton(
+                                onClick = onDeleteClick,
+                                modifier = Modifier.size(36.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Delete,
+                                    contentDescription = "Eliminar película"
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
-
-        //ICONO TOGGLE (BORRAR PELI) A LA DERECHA (FUERA DE LA TARJETA)
-        IconButton(
-            onClick = onDeleteClick
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Delete,
-                contentDescription = "Eliminar película"
-            )
-        }
-
-        /*
-                    Box(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.secondaryContainer),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(Icons.Outlined.Image, contentDescription = null)
-                    }
-
-                    Spacer(Modifier.width(12.dp))
-
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = peliculaI.titulo,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = "${peliculaI.genero} · ${peliculaI.año}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Text(
-                            text = "⭐ ${peliculaI.puntuacion}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
-
-         */
     }
 }
+
 
 
 
