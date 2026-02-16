@@ -114,19 +114,19 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun Navegacion() {
 
-        //Prueba
+
         val navController = rememberNavController()
         var destinoSeleccionado by remember { mutableIntStateOf(0) }
 
-        // LISTA COMPARTIDA
+
         val peliculas = remember {
             mutableStateListOf(
-                Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, true, R.drawable.inception),
-                Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false, true, R.drawable.interstellar),
-                Pelicula(3, "La Vida es Bella", "Bélico/Comedia", 1997, 9.7, true, true, R.drawable.lavidaesbella),
-                Pelicula(4, "Parasite", "Thriller", 2019, 8.6, false, false, R.drawable.parasite),
-                Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false, R.drawable.lalaland),
-                Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, false, R.drawable.lalaland),
+                Pelicula(1, "Inception", "Ciencia ficción", 2010, 8.8, true, R.drawable.inception),
+                Pelicula(2, "Interstellar", "Ciencia ficción", 2014, 8.6, false,  R.drawable.interstellar),
+                Pelicula(3, "La Vida es Bella", "Bélico/Comedia", 1997, 9.7, true,  R.drawable.lavidaesbella),
+                Pelicula(4, "Parasite", "Thriller", 2019, 8.6,false, R.drawable.parasite),
+                Pelicula(5, "La La Land", "Romance", 2016, 8.0, false, R.drawable.lalaland),
+                Pelicula(5, "La La Land", "Romance", 2016, 8.0,  false, R.drawable.lalaland),
             )
         }
 
