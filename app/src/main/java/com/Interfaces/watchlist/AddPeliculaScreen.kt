@@ -281,7 +281,7 @@ fun AddPeliculaScreen(
                         text = "GUARDAR",
                         color = White,
                         fontFamily = fuenteGuardar,
-                        fontSize = 15.sp,
+                        fontSize = 27.sp,
                         modifier = Modifier
                             .align(Alignment.Center)
                     )
