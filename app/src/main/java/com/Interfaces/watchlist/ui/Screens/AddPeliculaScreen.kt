@@ -1,4 +1,4 @@
-package com.Interfaces.watchlist
+package com.Interfaces.watchlist.ui.Screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,24 +37,37 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material3.OutlinedTextFieldDefaults.colors
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.Interfaces.watchlist.Model.Pelicula
+import com.Interfaces.watchlist.R
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.delay
 
+/**
+ * Pantalla para añadir una nueva película a la WatchList.
+ * Funcionalidad:
+ *      - Permite introducir título, género, año y puntuación.
+ *      - Al pulsar el botón animado (Lottie), crea un nuevo objeto Pelicula.
+ *      - Ejecuta el callback onAddPelicula para añadirla a la lista principal.
+ *      - Vuelve automáticamente a la pantalla anterior tras terminar la animación.
+ *
+ * Parámetros:
+ *      @param -> navController Controlador de navegación.
+ *      @param -> onAddPelicula Callback que recibe la nueva película creada.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPeliculaScreen(
     navController: NavController,
     onAddPelicula: (Pelicula) -> Unit
 ) {
-
-
 
     var titulo by remember { mutableStateOf("") }
     var genero by remember { mutableStateOf("") }
@@ -81,16 +93,9 @@ fun AddPeliculaScreen(
         }
     }
 
-
-
-
-
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-
-
         Image(
             painter = painterResource(id = R.drawable.fondo),
             contentDescription = null,
@@ -98,15 +103,14 @@ fun AddPeliculaScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(androidx.compose.ui.graphics.Color.Black.copy(alpha = 0.4f))
+                .background(Color.Black.copy(alpha = 0.4f))
         )
 
         Scaffold(
-            containerColor = androidx.compose.ui.graphics.Color.Transparent,
+            containerColor = Color.Transparent,
             topBar = {
                 Box(
                     modifier = Modifier
@@ -138,15 +142,11 @@ fun AddPeliculaScreen(
                         }
 
                         Spacer(modifier = Modifier.width(8.dp))
-
-
                     }
                 }
             }
 
         ) { innerPadding ->
-
-
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -155,13 +155,11 @@ fun AddPeliculaScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
 
-
                 Text(
                     text = "Añadir película",
                     style = MaterialTheme.typography.titleLarge,
                     color = White
                 )
-
 
                 OutlinedTextField(
                     value = titulo,
@@ -216,40 +214,13 @@ fun AddPeliculaScreen(
 
                 )
 
-
                 Spacer(modifier = Modifier.weight(1f))
-
-                /*LottieAnimation(
-                    composition = composition,
-                    progress = { progress },
-                    modifier = Modifier
-                        .size(300.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .clickable(
-                            enabled = !isPlaying
-                        ) {
-                            isPlaying = true
-
-                            val nuevaPelicula = Pelicula(
-                                id = (0..100000).random(),
-                                titulo = titulo,
-                                genero = genero,
-                                año = anyo.toIntOrNull() ?: 2024,
-                                puntuacion = puntuacion.toDoubleOrNull() ?: 0.0,
-                                vista = vista,
-                                imagen = R.drawable.pordefecto
-                            )
-
-                            onAddPelicula(nuevaPelicula)
-                        }
-                )*/
 
                 Box(
                     modifier = Modifier
                         .size(300.dp)
                         .align(Alignment.CenterHorizontally)
                         .clickable(enabled = !isPlaying) {
-
                             isPlaying = true
 
                             val nuevaPelicula = Pelicula(
@@ -261,12 +232,9 @@ fun AddPeliculaScreen(
                                 vista = vista,
                                 imagen = R.drawable.pordefecto
                             )
-
                             onAddPelicula(nuevaPelicula)
                         }
                 ) {
-
-
                     LottieAnimation(
                         composition = composition,
                         progress = { progress },
