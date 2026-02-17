@@ -54,7 +54,7 @@ import com.Interfaces.watchlist.R
  * Funcionalidad:
  *      - Muestra todas las películas almacenadas.
  *      - Permite filtrar por: Todos / Vistos / Pendientes.
- *      - Permite marcar una película como vista o no vista.
+ *      - Permite marcar una película como vista o no vista..
  *      - Permite eliminar una película con diálogo de confirmación.
  *      - Incluye botón flotante para navegar a la pantalla de añadir.
  *
@@ -68,17 +68,15 @@ fun ListaPeliculas(
     navcontroller: NavController,
     peliculas: MutableList<Pelicula>
 ) {
-    //Prueba
+
     var peliculaAEliminar by remember { mutableStateOf<Pelicula?>(null) }
 
-    // Estado para el filtro (todos, vistos, pendientes)
     var filtroSeleccionado by remember { mutableStateOf("todos") }
 
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        // IMAGEN DE FONDO
         Image(
             painter = painterResource(id = R.drawable.fondo),
             contentDescription = null,
@@ -86,7 +84,7 @@ fun ListaPeliculas(
             modifier = Modifier.fillMaxSize()
         )
 
-        // CAPA OSCURA PARA QUE SE LEA BIEN
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
