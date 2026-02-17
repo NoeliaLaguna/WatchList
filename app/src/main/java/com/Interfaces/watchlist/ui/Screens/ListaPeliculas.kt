@@ -123,7 +123,7 @@ fun ListaPeliculas(
             floatingActionButton = {
                 SmallFloatingActionButton(
                     onClick = {
-                        //Añadir película
+
                         navcontroller.navigate("add")
                     },
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -144,7 +144,10 @@ fun ListaPeliculas(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                //N!!
+
+
+                val numeroPendientes = peliculas.count { !it.vista }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -165,13 +168,14 @@ fun ListaPeliculas(
                     ) {
                         filtroSeleccionado = "vistos"
                     }
-
                     FiltroButton(
                         texto = "Pendientes",
-                        seleccionado = filtroSeleccionado == "pendientes"
+                        seleccionado = filtroSeleccionado == "pendientes",
+                        contador = numeroPendientes
                     ) {
                         filtroSeleccionado = "pendientes"
                     }
+
                 }
                 val peliculasFiltradas = when (filtroSeleccionado) {
                     "vistos" -> peliculas.filter { it.vista }
@@ -283,7 +287,7 @@ fun PeliculaItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                // IMAGEN
+
                 Image(
                     painter = painterResource(id = peliculaI.imagen),
                     contentDescription = peliculaI.titulo,
@@ -295,7 +299,7 @@ fun PeliculaItem(
 
                 Spacer(modifier = Modifier.width(10.dp))
 
-                // CONTENIDO
+
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -316,7 +320,7 @@ fun PeliculaItem(
                         style = MaterialTheme.typography.bodySmall
                     )
 
-                    // ACCIONES MÁS PEGADAS
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -377,12 +381,12 @@ fun PeliculaItem(
 fun FiltroButton(
     texto: String,
     seleccionado: Boolean,
+    contador: Int? = null,
     onClick: () -> Unit
 ) {
     ExtendedFloatingActionButton(
         onClick = { onClick() },
 
-        // Icono solo si está seleccionado
         icon = {
             if (seleccionado) {
                 Icon(
@@ -392,7 +396,30 @@ fun FiltroButton(
             }
         },
         text = {
-            Text(texto)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(texto)
+
+                if (contador != null && contador > 0) {
+                    Spacer(modifier = Modifier.width(6.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = Color.Red,
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = contador.toString(),
+                            color = Color.White,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
+                }
+            }
         }
     )
 }
